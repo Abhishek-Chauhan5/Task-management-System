@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Login | TaskFlow</title>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            min-height: 100vh;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            overflow: hidden;
+
+            background: linear-gradient(
+                135deg,
+                #667eea,
+                #764ba2,
+                #6b8dd6
+            );
+        }
+
+        /* Animated Background */
+
+        .background {
+            position: fixed;
+            inset: 0;
+            overflow: hidden;
+            z-index: -1;
+        }
+
+        .circle {
+            position: absolute;
+            border-radius: 50%;
+
+            background: rgba(255, 255, 255, 0.12);
+
+            animation: float 8s infinite ease-in-out;
+        }
+
+        .circle:nth-child(1) {
+            width: 250px;
+            height: 250px;
+            top: -80px;
+            left: -80px;
+        }
+
+        .circle:nth-child(2) {
+            width: 180px;
+            height: 180px;
+            bottom: -50px;
+            right: 10%;
+            animation-delay: 2s;
+        }
+
+        .circle:nth-child(3) {
+            width: 100px;
+            height: 100px;
+            top: 20%;
+            right: 15%;
+            animation-delay: 4s;
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0);
+            }
+
+            50% {
+                transform: translateY(-30px);
+            }
+        }
+
+        /* Login Card */
+
+        .login-container {
+            width: 400px;
+
+            padding: 35px;
+
+            background: rgba(255, 255, 255, 0.95);
+
+            border-radius: 20px;
+
+            box-shadow:
+                0 25px 60px rgba(0, 0, 0, 0.25);
+
+            animation: cardEntry 0.8s ease;
+
+            backdrop-filter: blur(10px);
+        }
+
+        @keyframes cardEntry {
+            from {
+                opacity: 0;
+                transform: translateY(50px) scale(0.95);
+            }
+
+            to {
+                opacity: 1;
+                transform: translateY(0) scale(1);
+            }
+        }
+
+        /* Logo */
+
+        .logo {
+            width: 70px;
+            height: 70px;
+
+            margin: auto;
+            margin-bottom: 15px;
+
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            border-radius: 18px;
+
+            font-size: 35px;
+
+            background: linear-gradient(
+                135deg,
+                #667eea,
+                #764ba2
+            );
+
+            box-shadow:
+                0 10px 25px rgba(102, 126, 234, 0.35);
+
+            animation: logoPulse 2s infinite;
+        }
+
+        @keyframes logoPulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+        }
+
+        h1 {
+            text-align: center;
+            color: #222;
+
+            margin-bottom: 8px;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #777;
+
+            margin-bottom: 28px;
+        }
+
+        /* Input */
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+
+            margin-bottom: 7px;
+
+            font-size: 14px;
+            font-weight: bold;
+
+            color: #333;
+        }
+
+        input[type="text"],
+        input[type="password"] {
+            width: 100%;
+
+            padding: 13px 14px;
+
+            border: 2px solid #e5e7eb;
+
+            border-radius: 9px;
+
+            outline: none;
+
+            font-size: 15px;
+
+            transition: all 0.3s ease;
+        }
+
+        input:focus {
+            border-color: #667eea;
+
+            transform: translateY(-1px);
+
+            box-shadow:
+                0 5px 15px rgba(102, 126, 234, 0.15);
+        }
+
+        /* Password */
+
+        .password-wrapper {
+            position: relative;
+        }
+
+        .password-wrapper input {
+            padding-right: 65px;
+        }
+
+        .show-password {
+            position: absolute;
+
+            right: 12px;
+            top: 50%;
+
+            transform: translateY(-50%);
+
+            border: none;
+
+            background: transparent;
+
+            color: #667eea;
+
+            font-weight: bold;
+
+            cursor: pointer;
+        }
+
+        /* Password Strength */
+
+        .strength-container {
+            margin-top: 8px;
+        }
+
+        .strength-bar {
+            height: 5px;
+
+            width: 0%;
+
+            border-radius: 10px;
+
+            background: #ddd;
+
+            transition: 0.3s;
+        }
+
+        .strength-text {
+            font-size: 12px;
+
+            color: #777;
+
+            margin-top: 4px;
+        }
+
+        /* Remember */
+
+        .options {
+            display: flex;
+
+            justify-content: space-between;
+
+            align-items: center;
+
+            margin-bottom: 20px;
+
+            font-size: 13px;
+        }
+
+        .remember {
+            display: flex;
+            align-items: center;
+
+            gap: 6px;
+        }
+
+        .remember input {
+            cursor: pointer;
+        }
+
+        .forgot {
+            color: #667eea;
+
+            text-decoration: none;
+        }
+
+        .forgot:hover {
+            text-decoration: underline;
+        }
+
+        /* Login Button */
+
+        .login-btn {
+            width: 100%;
+
+            padding: 14px;
+
+            border: none;
+
+            border-radius: 9px;
+
+            background: linear-gradient(
+                135deg,
+                #667eea,
+                #764ba2
+            );
+
+            color: white;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: all 0.3s ease;
+
+            position: relative;
+        }
+
+        .login-btn:hover {
+            transform: translateY(-3px);
+
+            box-shadow:
+                0 10px 25px rgba(102, 126, 234, 0.4);
+        }
+
+        .login-btn:active {
+            transform: scale(0.97);
+        }
+
+        /* Message */
+
+        .message {
+            padding: 10px;
+
+            margin-bottom: 18px;
+
+            border-radius: 8px;
+
+            text-align: center;
+
+            font-size: 14px;
+        }
+
+        .error-message {
+            display: block;
+
+            background: #fee2e2;
+
+            color: #b91c1c;
+
+            border: 1px solid #fecaca;
+        }
+
+        /* Register */
+
+        .register {
+            text-align: center;
+
+            margin-top: 22px;
+
+            color: #777;
+
+            font-size: 14px;
+        }
+
+        .register a {
+            color: #667eea;
+
+            font-weight: bold;
+
+            text-decoration: none;
+        }
+
+        .register a:hover {
+            text-decoration: underline;
+        }
+
+        /* Mobile */
+
+        @media (max-width: 450px) {
+
+            .login-container {
+                width: 90%;
+
+                padding: 25px;
+            }
+        }
+    </style>
+</head>
+
+
+<body>
+
+    <!-- Animated Background -->
+
+    <div class="background">
+
+        <div class="circle"></div>
+        <div class="circle"></div>
+        <div class="circle"></div>
+
+    </div>
+
+
+    <!-- Login Card -->
+
+    <div class="login-container">
+
+        <h1>Welcome Back!</h1>
+
+        <p class="subtitle">
+            Login to manage your tasks
+        </p>
+
+
+        <!-- Django Error Message -->
+
+        {% if error %}
+
+        <div class="message error-message">
+            {{ error }}
+        </div>
+
+        {% endif %}
+
+
+        <!-- Login Form -->
+
+        <form
+            id="loginForm"
+            method="POST"
+        >
+
+            {% csrf_token %}
+
+
+            <!-- Username -->
+
+            <div class="form-group">
+
+                <label for="username">
+                    Username
+                </label>
+
+                <input
+                    type="text"
+                    id="username"
+                    name="username"
+                    placeholder="Enter your username"
+                    autocomplete="username"
+                    required
+                >
+
+            </div>
+
+
+            <!-- Password -->
+
+            <div class="form-group">
+
+                <label for="password">
+                    Password
+                </label>
+
+                <div class="password-wrapper">
+
+                    <input
+                        type="password"
+                        id="password"
+                        name="password"
+                        placeholder="Enter your password"
+                        autocomplete="current-password"
+                        required
+                    >
+
+                    <button
+                        type="button"
+                        class="show-password"
+                        id="showPassword"
+                    >
+                        Show
+                    </button>
+
+                </div>
+
+
+                <!-- Password Strength -->
+
+                <div class="strength-container">
+
+                    <div
+                        class="strength-bar"
+                        id="strengthBar"
+                    >
+                    </div>
+
+                    <div
+                        class="strength-text"
+                        id="strengthText"
+                    >
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- Options -->
+
+            <div class="options">
+
+                <label class="remember">
+
+                    <input
+                        type="checkbox"
+                        id="remember"
+                    >
+
+                    Remember me
+
+                </label>
+
+
+                <a
+                    href="#"
+                    class="forgot"
+                >
+                    Forgot password?
+                </a>
+
+            </div>
+
+
+            <!-- Login Button -->
+
+            <button
+                type="submit"
+                class="login-btn"
+            >
+                Login
+            </button>
+
+        </form>
+
+
+        <!-- Register -->
+
+        <div class="register">
+
+            Don't have an account?
+
+            <a href="{% url 'web-register' %}">
+                Create Account
+            </a>
+
+        </div>
+
+    </div>
+
+
+    <script>
+
+        const password =
+            document.getElementById("password");
+
+        const showPassword =
+            document.getElementById("showPassword");
+
+        const strengthBar =
+            document.getElementById("strengthBar");
+
+        const strengthText =
+            document.getElementById("strengthText");
+
+
+        // Show / Hide Password
+
+        showPassword.addEventListener(
+            "click",
+            function () {
+
+                if (password.type === "password") {
+
+                    password.type = "text";
+
+                    showPassword.innerText = "Hide";
+
+                } else {
+
+                    password.type = "password";
+
+                    showPassword.innerText = "Show";
+
+                }
+
+            }
+        );
+
+
+        // Password Strength
+
+        password.addEventListener(
+            "input",
+            function () {
+
+                const value = password.value;
+
+                let strength = 0;
+
+
+                if (value.length >= 6) {
+                    strength++;
+                }
+
+                if (/[A-Z]/.test(value)) {
+                    strength++;
+                }
+
+                if (/[0-9]/.test(value)) {
+                    strength++;
+                }
+
+                if (/[^A-Za-z0-9]/.test(value)) {
+                    strength++;
+                }
+
+
+                if (value.length === 0) {
+
+                    strengthBar.style.width = "0%";
+
+                    strengthText.innerText = "";
+
+                }
+
+                else if (strength <= 1) {
+
+                    strengthBar.style.width = "25%";
+
+                    strengthText.innerText =
+                        "Weak password";
+
+                }
+
+                else if (strength === 2) {
+
+                    strengthBar.style.width = "50%";
+
+                    strengthText.innerText =
+                        "Medium password";
+
+                }
+
+                else if (strength === 3) {
+
+                    strengthBar.style.width = "75%";
+
+                    strengthText.innerText =
+                        "Good password";
+
+                }
+
+                else {
+
+                    strengthBar.style.width = "100%";
+
+                    strengthText.innerText =
+                        "Strong password";
+
+                }
+
+            }
+        );
+
+    </script>
+
+</body>
+
+</html>
